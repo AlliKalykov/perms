@@ -15,3 +15,36 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         # Write permissions are only allowed to the creator of the movie
         return obj.creator == request.user
+    
+
+class ReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow read-only operations.
+    """
+
+    def has_permission(self, request, view):
+        
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        
+
+class IsSuperuser(permissions.BasePermission):
+    """
+    Custom permission to only allow superuser to access.
+    """
+
+    def has_permission(self, request, view):
+        
+        if request.user:
+            return request.user.is_superuser        
+
+
+class IsStaff(permissions.BasePermission):
+    """
+    Custom permission to only allow admin to access.
+    """
+
+    def has_permission(self, request, view):
+        
+        if request.user:
+            return request.user.is_staff
